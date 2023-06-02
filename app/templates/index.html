@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="../static/css/style.css">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question-Answering System</title>
+</head>
+<body>
+    <div class="container">
+    <div class="chatbox">
+        <button class="chat-toggle" id="chat-toggle">
+            <div class="icon-container2">
+                <img src="../static/chat-icon-png-8.png" alt="Chat Icon">
+             </div>
+        </button>
+        <div class="chatbox__support chatbox--inactive" id="chatbox-support">
+            <div class="chatbox__header">
+                <button class="close-button">×</button>
+
+                <div class="chatbox__content--header">
+                    <img src="../static/queenMaryIcon2.png" alt="Chat Icon" class="chat-icon" style="width: 50px; height: 50px;">
+                    <div class="header-text">
+                        <h4 class="chatbox__heading--header">QMbot</h4>
+                        <p class="chatbox__description--header">🟢 Online</p>
+                    </div>
+                </div>
+            </div>
+            <div class="chatbox__messages">
+                <div id="answer">
+
+                </div>
+            </div>
+            <div class="chatbox__footer">
+                <form id="ask-form" onsubmit="event.preventDefault(); askQuestion();">
+                    <div class="input-container">
+                        <input type="text" id="question" name="question" placeholder="Write your question...">
+                        <div class="icon-container">
+                            <button type="submit" id="sendButton" class="chatbox__send--footer send__button">
+    <div class="icon-wrapper">
+        <img src="../static/send_message_icon.png" alt="Send">
+    </div>
+</button>
+
+                        </div>
+                    </div>
+                </form>
+                <button id="clearMessages" class="clear-button-class">Clear Messages</button>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<script>
+    const messageInput = document.getElementById('question');
+
+
+
+    async function askQuestion() {
+        const question = document.getElementById('question').value;
+
+        if (question.trim() === '') {
+            return;
+        }
+
+        messageInput.value = '';
+
+        const response = await fetch('http://127.0.0.1:5000/ask', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `question=${encodeURIComponent(question)}`,
+        });
+
+        if (response.ok) {
+            const jsonResponse = await response.json();
+            console.log('JSON Response:', jsonResponse);
+            const answer = jsonResponse.response;
+            const no_answer_found = jsonResponse.no_answer_found;
+
+        if (no_answer_found) {
+            sendToAlgorithm(answer);
+        } else {
+            displayAnswer(question, answer);
+             }
+    } else {
+        console.error('Error fetching response:', response.status, response.statusText);
+    }
+}
+
+// Get the clear messages button element
+const clearMessagesButton = document.getElementById('clearMessages');
+
+// Get the answer container element
+const answerContainer = document.getElementById('answer');
+
+// Add a click event listener to the clear messages button
+clearMessagesButton.addEventListener('click', () => {
+  // Clear the answer container's innerHTML
+  answerContainer.innerHTML = '';
+});
+
+
+async function sendToAlgorithm(question) {
+    const response = await fetch('http://127.0.0.1:5000/message', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `message=${encodeURIComponent(question)}`,
+    });
+
+    if (response.ok) {
+        const jsonResponse = await response.json();
+        console.log('JSON Response:', jsonResponse);
+        const answer = jsonResponse.answer;
+        displayAnswer(question, answer);
+    } else {
+        console.error('Error fetching response:', response.status, response.statusText);
+    }
+}
+function displayAnswer(question, answer) {
+    const answerContainer = document.getElementById('answer')
+        answerContainer.innerHTML += '<div class="messages__item messages__item--user"><p><strong>User:</strong> ' + question + '</p></div><div class="messages__item messages__item--bot"><p><strong>Bot:</strong> ' + answer + '</p></div>';
+    scrollBottom(answerContainer);
+}
+
+
+function scrollBottom(answerContainer) {
+    setTimeout(() => {
+        answerContainer.scrollTop(0, answerContainer.scrollHeight);
+    }, 0);
+}
+function ButtonClick(button) {
+    const answer = button.getAttribute("data-answer");
+    const question = button.textContent;
+    displayAnswer(question, answer);
+}
+    function sendHelloMessage() {
+        const buttons = `
+            <div class="button-container">
+                <button class="entry-button" data-answer="{{ button_data.financial_support }}" onclick="ButtonClick(this)">Financial Support</button>
+                <button class="entry-button" data-answer="{{ button_data.accommodation }}" onclick="ButtonClick(this)">Accommodation</button>
+                <button class="entry-button" data-answer="{{ button_data.fees }}" onclick="ButtonClick(this)">Fees</button>
+                <button class="entry-button" data-answer="{{ button_data.eecs_undergraduate_programmes }}" onclick="ButtonClick(this)">EECS Undergraduate Programmes</button>
+                <button class="entry-button" data-answer="{{ button_data.enrolment }}" onclick="ButtonClick(this)">Enrolment</button>
+            </div>
+        `;
+
+        document.getElementById('answer').innerHTML += '<div class="messages__item messages__item--bot"><p><strong>Bot:</strong> Hello! I\'m QMbot! <br> I can answer your questions about EECS or some general questions related to university. How can I help you? </p>' + buttons + '</div>';
+    }
+    function toggleChat() {
+        const chatSupport = document.querySelector('.chatbox__support');
+        const chatToggle = document.querySelector('.chat-toggle');
+
+        chatSupport.classList.toggle('chatbox--inactive');
+        chatSupport.classList.toggle("chatbox--active");
+        chatToggle.classList.toggle('chat-toggle--hidden');
+        if (chatSupport.classList.contains('chatbox--active') && !chatSupport.dataset.helloMessageSent) {
+            sendHelloMessage();
+            chatSupport.dataset.helloMessageSent = 'true';
+        }
+    }
+
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelector(".chat-toggle").addEventListener("click", toggleChat);
+    document.querySelector(".close-button").addEventListener("click", toggleChat);
+});
+</script>
+
+</body>
+</html>

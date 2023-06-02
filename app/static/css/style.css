@@ -1,0 +1,358 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Helvetica', sans-serif;
+    font-weight: 300;
+    font-size: 100%;
+    background: #F1F1F1;
+}
+
+
+
+
+.chatbox {
+    position: fixed;
+    bottom: 15px;
+    right: 15px;
+}
+
+
+.chatbox__support {
+    display: flex;
+    flex-direction: column;
+    background: #f9f9f9;
+    height: 600px !important;
+    width: 350px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    z-index: 1000;
+    transition: all 0.4s ease-in-out;
+}
+
+.chatbox--inactive {
+    transform: translateY(100%);
+    opacity: 0;
+}
+
+
+
+.chatbox--active {
+    transform: translateY(-40px);
+    z-index: 123456;
+    opacity: 1;
+
+}
+
+
+.chatbox__button {
+    text-align: right;
+}
+
+
+.clear-button-class {
+    font-family: "Helvetica";
+    background-color: #0066b2;
+    border: none;
+    color: white;
+    border-radius: 25px;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-left: 10px;
+}
+.clear-button-class:hover {
+    background-color: #0036b2;
+}
+
+.icon-wrapper {
+    display: inline-block;
+    padding: 8px 6px 4px 8px;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+}
+
+.send__button:hover .icon-wrapper {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.close-button {
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+    padding: 6px;
+    margin: 0;
+    line-height: 1;
+    transition: background-color 0.3s ease;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    border-radius: 50%;
+}
+
+.close-button:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+.chat-toggle {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background: #0066b2;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 100;
+    border: 2px solid black;
+}
+
+.icon-container2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.chat-toggle img {
+    width: 75%;
+    height: 75%;
+    filter: brightness(0) invert(1);
+}
+
+.chat-toggle--hidden {
+    display: none;
+}
+
+.chat-toggle img {
+    width: 24px;
+    height: 24px;
+}
+
+.icon-container {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border-radius: 0 5px 5px 0;
+    padding-left: 10px;
+}
+
+.send__button {
+    padding: 0;
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.input-container {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border-radius: 5px;
+    padding-right: 10px;
+}
+
+
+.send__button img {
+    width: 24px;
+    height: 24px;
+    display: block;
+}
+
+
+/* HEADER */
+.chatbox__header {
+    background: #0066b2;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 15px 20px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.chatbox__content--header {
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+}
+
+.header-text {
+    margin-left: 10px;
+}
+
+
+/* MESSAGES */
+.chatbox__messages {
+    margin-top: auto;
+    display: flex;
+    overflow-y: scroll;
+    flex-direction: column-reverse;
+}
+
+.messages__item {
+    margin-top: 10px;
+    padding: 10px 15px;
+    max-width: 70%;
+    border-radius: 15px;
+    line-height: 1.4;
+    position: relative;
+}
+
+.messages__item p {
+    margin: 0;
+}
+
+.messages__item--user {
+    background: #0066b2;
+    #color: #333;
+    align-self: flex-end;
+    border-top-right-radius: 5px;
+    margin-left: auto;
+    color: white;
+}
+
+
+.messages__item--bot {
+    background: green;
+    color: white;
+    align-self: flex-start;
+    border-top-left-radius: 5px;
+}
+
+.chatbox__messages::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.messages__item--operator {
+    margin-left: auto;
+}
+
+.messages__item--visitor {
+    margin-right: auto;
+}
+
+/* FOOTER */
+.chatbox__footer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 20px;
+    background: #0066b2;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    margin-top: 20px;
+}
+
+.button-container{
+    margin-top: 10px;
+    flex-direction: column;
+    display:flex;
+
+}
+.entry-button{
+    border: 2px solid white;
+    background-color: green;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    cursor: pointer;
+    margin-bottom: 5px;
+    text-align: center;
+    font-size: 12px;
+
+
+}
+
+
+.chatbox__header {
+    background: #0066b2;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    padding: 15px 20px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+
+}
+
+
+
+.chatbox__heading--header {
+    font-size: 1.2rem;
+    color: white;
+}
+
+.chatbox__description--header {
+    font-size: .9rem;
+    color: white;
+}
+
+
+.chatbox__messages {
+    padding: 0 20px;
+}
+
+.messages__item {
+    margin-top: 10px;
+
+    padding: 8px 12px;
+    max-width: 70%;
+}
+
+.messages__item--visitor,
+.messages__item--typing {
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+.messages__item--operator {
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+
+    color: white;
+}
+
+
+.chatbox__footer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 20px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    margin-top: 20px;
+}
+
+.chatbox__footer input {
+    border: none;
+    padding: 10px 10px;
+    border-radius: 5px 0 0 5px;
+    text-align: left;
+    flex-grow: 1;
+}
+.chatbox__footer input:focus {
+    outline: none;
+}
+
+
+.chatbox__send--footer {
+    color: white;
+}
+
